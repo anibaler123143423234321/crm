@@ -50,8 +50,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOriginPatterns(List.of("*")); // SOLUCIÓN: Reemplaza allowedOrigins("*") por allowedOriginPatterns("*")
-                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    config.setAllowedOrigins(List.of(
+                            "http://localhost:5200",
+                            "https://seguimiento-egresado.web.app",
+                            "https://apisozarusac.com",
+                            "http://www.api.midassolutiongroup.com"
+
+                    ));
+                    config.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setExposedHeaders(List.of("Authorization"));
                     config.setAllowCredentials(true);
@@ -85,7 +91,12 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("*") // SOLUCIÓN: Reemplaza allowedOrigins("*") por allowedOriginPatterns("*")
+                        .allowedOrigins(
+                                "http://localhost:5200",
+                                "https://seguimiento-egresado.web.app",
+                                "https://apisozarusac.com",
+                                "http://www.api.midassolutiongroup.com"
+                        )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

@@ -10,7 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*") // Permite solicitudes desde cualquier dominio
+@CrossOrigin(origins = {
+        "http://localhost:5200",
+        "https://seguimiento-egresado.web.app",
+        "https://apisozarusac.com",
+        "http://www.api.midassolutiongroup.com"
+}, allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowCredentials = "true")
 @RequestMapping("api/authentication")
 public class AuthenticationController {
 

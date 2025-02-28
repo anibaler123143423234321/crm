@@ -23,7 +23,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
-@CrossOrigin(origins = "*") // Permite solicitudes desde cualquier dominio
+@CrossOrigin(origins = {
+        "http://localhost:5200",
+        "https://seguimiento-egresado.web.app",
+        "https://apisozarusac.com",
+        "http://www.api.midassolutiongroup.com"
+}, allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowCredentials = "true")
 @RequestMapping("api/user")
 public class UserController {
     @Autowired

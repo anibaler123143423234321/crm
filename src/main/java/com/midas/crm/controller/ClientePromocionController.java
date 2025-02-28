@@ -14,7 +14,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*") // Permite solicitudes desde cualquier dominio
+@CrossOrigin(origins = {
+        "http://localhost:5200",
+        "https://seguimiento-egresado.web.app",
+        "https://apisozarusac.com",
+        "http://www.api.midassolutiongroup.com"
+}, allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowCredentials = "true")
 public class ClientePromocionController {
 
     @Autowired
