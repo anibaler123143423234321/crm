@@ -50,11 +50,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOriginPatterns(Collections.singletonList("*")); // Permitir cualquier dominio
-                    config.setAllowedMethods(Collections.singletonList("*")); // Permitir todos los métodos
-                    config.setAllowedHeaders(Collections.singletonList("*")); // Permitir todos los headers
+                    config.setAllowedOriginPatterns(Collections.singletonList("*")); // Permite cualquier origen
+                    config.setAllowedMethods(Collections.singletonList("*")); // Permite todos los métodos
+                    config.setAllowedHeaders(Collections.singletonList("*")); // Permite todos los headers
                     config.setExposedHeaders(Collections.singletonList("Authorization"));
-                    config.setAllowCredentials(true);
+                    config.setAllowCredentials(true); // Permite credenciales
                     return config;
                 }))
                 .sessionManagement(sessionManagement ->
@@ -62,7 +62,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/authentication/sign-in", "/api/authentication/sign-up")
+                                .requestMatchers("/api/authentication/sign-in", "/api/authentication/sign-up", "/api/authentication/sign-in/egresado")
                                 .permitAll() // Permitir acceso sin autenticación
                                 .requestMatchers("/api/cliente-promocion", "/api/user/crear-masivo")
                                 .permitAll()
@@ -80,10 +80,10 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("*") // Permitir cualquier dominio
-                        .allowedMethods("*") // Permitir cualquier método HTTP
-                        .allowedHeaders("*") // Permitir todos los headers
-                        .allowCredentials(true);
+                        .allowedOriginPatterns("*") // Reemplaza allowedOrigins("*")
+                        .allowedMethods("*") // Permite cualquier método HTTP
+                        .allowedHeaders("*") // Permite todos los headers
+                        .allowCredentials(true); // Permite credenciales
             }
         };
     }
