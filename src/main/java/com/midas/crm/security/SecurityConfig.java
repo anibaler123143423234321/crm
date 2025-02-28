@@ -19,7 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Collections;
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -50,11 +50,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOriginPatterns(Collections.singletonList("*")); // Permite cualquier origen
-                    config.setAllowedMethods(Collections.singletonList("*")); // Permite todos los métodos
-                    config.setAllowedHeaders(Collections.singletonList("*")); // Permite todos los headers
-                    config.setExposedHeaders(Collections.singletonList("Authorization"));
-                    config.setAllowCredentials(true); // Permite credenciales
+                    config.setAllowedOriginPatterns(List.of("*")); // SOLUCIÓN: Reemplaza allowedOrigins("*") por allowedOriginPatterns("*")
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    config.setAllowedHeaders(List.of("*"));
+                    config.setExposedHeaders(List.of("Authorization"));
+                    config.setAllowCredentials(true);
                     return config;
                 }))
                 .sessionManagement(sessionManagement ->
@@ -62,10 +62,15 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/authentication/sign-in", "/api/authentication/sign-up", "/api/authentication/sign-in/egresado")
-                                .permitAll() // Permitir acceso sin autenticación
-                                .requestMatchers("/api/cliente-promocion", "/api/user/crear-masivo")
-                                .permitAll()
+                                .requestMatchers(
+                                        "/api/authentication/sign-in",
+                                        "/api/authentication/sign-up",
+                                        "/api/authentication/sign-in/egresado"
+                                ).permitAll()
+                                .requestMatchers(
+                                        "/api/cliente-promocion",
+                                        "/api/user/crear-masivo"
+                                ).permitAll()
                                 .anyRequest().authenticated()
                 );
 
@@ -80,10 +85,10 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("*") // Reemplaza allowedOrigins("*")
-                        .allowedMethods("*") // Permite cualquier método HTTP
-                        .allowedHeaders("*") // Permite todos los headers
-                        .allowCredentials(true); // Permite credenciales
+                        .allowedOriginPatterns("*") // SOLUCIÓN: Reemplaza allowedOrigins("*") por allowedOriginPatterns("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }
