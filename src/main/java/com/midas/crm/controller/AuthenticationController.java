@@ -4,18 +4,14 @@ package com.midas.crm.controller;
 import com.midas.crm.entity.User;
 import com.midas.crm.service.AuthenticationService;
 import com.midas.crm.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = {
-        "http://localhost:5200",
-        "https://seguimiento-egresado.web.app",
-        "https://apisozarusac.com",
-        "http://www.api.midassolutiongroup.com"
-}, allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowCredentials = "true")
+@RequiredArgsConstructor
 @RequestMapping("api/authentication")
 public class AuthenticationController {
 

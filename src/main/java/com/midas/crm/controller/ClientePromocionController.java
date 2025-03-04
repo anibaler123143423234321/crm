@@ -5,6 +5,7 @@ import com.midas.crm.entity.ClienteResidencial;
 import com.midas.crm.entity.User;
 import com.midas.crm.service.ClienteResidencialService;
 import com.midas.crm.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = {
-        "http://localhost:5200",
-        "https://seguimiento-egresado.web.app",
-        "https://apisozarusac.com",
-        "http://www.api.midassolutiongroup.com"
-}, allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowCredentials = "true")
+@RequiredArgsConstructor
 public class ClientePromocionController {
 
     @Autowired

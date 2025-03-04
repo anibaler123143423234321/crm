@@ -6,6 +6,7 @@ import com.midas.crm.entity.User;
 import com.midas.crm.security.UserPrincipal;
 import com.midas.crm.service.ExcelService;
 import com.midas.crm.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
-@CrossOrigin(origins = {
-        "http://localhost:5200",
-        "https://seguimiento-egresado.web.app",
-        "https://apisozarusac.com",
-        "http://www.api.midassolutiongroup.com"
-}, allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowCredentials = "true")
+@RequiredArgsConstructor
 @RequestMapping("api/user")
 public class UserController {
     @Autowired

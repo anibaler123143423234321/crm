@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -47,42 +48,47 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(request -> {
-                    CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of(
-                            "http://localhost:5200",
-                            "https://seguimiento-egresado.web.app",
-                            "https://apisozarusac.com",
-                            "http://www.api.midassolutiongroup.com"
-
-                    ));
-                    config.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT", "OPTIONS"));
-                    config.setAllowedHeaders(List.of("*"));
-                    config.setExposedHeaders(List.of("Authorization"));
-                    config.setAllowCredentials(true);
-                    return config;
-                }))
+                .csrf(csrf -> csrf.disable()) // Deshabilita CSRF para APIs sin estado (JWT)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Usa la configuración de CORS
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
-                                .requestMatchers(
-                                        "/api/authentication/sign-in",
-                                        "/api/authentication/sign-up",
-                                        "/api/authentication/sign-in/egresado"
-                                ).permitAll()
-                                .requestMatchers(
-                                        "/api/cliente-promocion",
-                                        "/api/user/crear-masivo"
-                                ).permitAll()
-                                .anyRequest().authenticated()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/api/authentication/sign-in",
+                                "/api/authentication/sign-up",
+                                "/api/authentication/sign-in/egresado"
+                        ).permitAll()
+                        .requestMatchers(
+                                "/api/cliente-promocion",
+                                "/api/user/crear-masivo"
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 );
 
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    // ✅ CONFIGURACIÓN CORRECTA DE CORS
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        return request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedOrigins(List.of(
+                    "http://localhost:5200",
+                    "https://seguimiento-egresado.web.app",
+                    "https://apisozarusac.com",
+                    "http://www.api.midassolutiongroup.com",
+                    "https://project-a16f1.web.app" // ✅ Firebase Hosting
+            ));
+            config.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT", "OPTIONS"));
+            config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+            config.setExposedHeaders(List.of("Authorization"));
+            config.setAllowCredentials(true);
+            return config;
+        };
     }
 
     @Bean
@@ -95,10 +101,11 @@ public class SecurityConfig {
                                 "http://localhost:5200",
                                 "https://seguimiento-egresado.web.app",
                                 "https://apisozarusac.com",
-                                "http://www.api.midassolutiongroup.com"
+                                "http://www.api.midassolutiongroup.com",
+                                "https://project-a16f1.web.app" // ✅ Firebase Hosting
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
+                        .allowedHeaders("Authorization", "Content-Type")
                         .allowCredentials(true);
             }
         };
