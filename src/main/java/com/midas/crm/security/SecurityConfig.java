@@ -56,8 +56,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/authentication/sign-in",
-                                "/api/authentication/sign-up",
-                                "/api/authentication/sign-in/egresado"
+                                "/api/authentication/sign-up"
                         ).permitAll()
                         .requestMatchers(
                                 "/api/cliente-promocion",
@@ -80,7 +79,7 @@ public class SecurityConfig {
                     "http://localhost:5200",
                     "https://seguimiento-egresado.web.app",
                     "https://apisozarusac.com",
-                    "http://www.api.midassolutiongroup.com",
+                    "https://www.api.midassolutiongroup.com",
                     "https://project-a16f1.web.app" // ✅ Firebase Hosting
             ));
             config.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT", "OPTIONS"));
@@ -101,7 +100,7 @@ public class SecurityConfig {
                                 "http://localhost:5200",
                                 "https://seguimiento-egresado.web.app",
                                 "https://apisozarusac.com",
-                                "http://www.api.midassolutiongroup.com",
+                                "https://www.api.midassolutiongroup.com",
                                 "https://project-a16f1.web.app" // ✅ Firebase Hosting
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")

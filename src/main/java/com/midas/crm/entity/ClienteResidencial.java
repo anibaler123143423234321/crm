@@ -39,60 +39,60 @@ public class ClienteResidencial {
     @Column(name = "correo_electronico", length = 100, nullable = true)
     private String correoElectronico;
 
-    @Column(name = "cuenta_bancaria", length = 34)
+    @Column(name = "cuenta_bancaria", length = 34, nullable = true)
     private String cuentaBancaria;
 
-    @Column(name = "permanencia", length = 30)
+    @Column(name = "permanencia", length = 30, nullable = true)
     private String permanencia;
 
-    @Column(name = "direccion", length = 200)
+    @Column(name = "direccion", length = 200, nullable = true)
     private String direccion;
 
-    @Column(name = "tipo_fibra", length = 50)
+    @Column(name = "tipo_fibra", length = 50, nullable = true)
     private String tipoFibra;
 
     @Column(name = "movil_contacto", length = 20, nullable = false)
     private String movilContacto;
 
-    @Column(name = "fijo_compania", length = 50)
+    @Column(name = "fijo_compania", length = 50, nullable = true)
     private String fijoCompania;
 
-    @Column(name = "plan_actual", length = 100)
+    @Column(name = "plan_actual", length = 100, nullable = true)
     private String planActual;
 
-    @Column(name = "codigo_postal", length = 10)
+    @Column(name = "codigo_postal", length = 10, nullable = true)
     private String codigoPostal;
 
-    @Column(name = "provincia", length = 50)
+    @Column(name = "provincia", length = 50, nullable = true)
     private String provincia;
 
-    @Column(name = "distrito", length = 50)
+    @Column(name = "distrito", length = 50, nullable = true)
     private String distrito;
 
-    @Column(name = "ciudad", length = 50)
+    @Column(name = "ciudad", length = 50, nullable = true)
     private String ciudad;
 
     @Column(name = "tipo_plan", length = 20, nullable = true)
     private String tipoPlan;
 
-    @Column(name = "icc", length = 19)
+    @Column(name = "icc", length = 19, nullable = true)
     private String icc;
 
     @ElementCollection
     @CollectionTable(name = "moviles_a_portar", joinColumns = @JoinColumn(name = "cliente_residencial_id"))
-    @Column(name = "numero_movil", length = 20)
+    @Column(name = "numero_movil", length = 20, nullable = true)
     private List<String> movilesAPortar;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = true)
     private User usuario;
 
     // ✅ NUEVOS CAMPOS PARA LAS AUTORIZACIONES
-    @Column(name = "autoriza_seguros", nullable = false)
+    @Column(name = "autoriza_seguros", nullable = true)
     @Builder.Default
     private boolean autorizaSeguros = false;
 
-    @Column(name = "autoriza_energias", nullable = false)
+    @Column(name = "autoriza_energias", nullable = true)
     @Builder.Default
     private boolean autorizaEnergias = false;
 
