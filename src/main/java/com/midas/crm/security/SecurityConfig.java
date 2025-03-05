@@ -54,16 +54,29 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+                        // Endpoints de autenticación y registro
                         .requestMatchers(
                                 "/api/authentication/sign-in",
                                 "/api/authentication/sign-up"
                         ).permitAll()
+                        // Endpoints públicos adicionales (por ejemplo, promociones y carga masiva)
                         .requestMatchers(
                                 "/api/cliente-promocion",
                                 "/api/user/crear-masivo"
                         ).permitAll()
+                        // Endpoints de usuarios (listar, cambiar rol, obtener por id, búsqueda, soft delete, etc.)
+                        .requestMatchers(
+                                "/api/user/listar",
+                                "/api/user/change/**",   // Permite /api/user/change/{role} o /api/user/change/{role}/{userId}
+                                "/api/user",             // Por ejemplo, para obtener el usuario actual
+                                "/api/user/**",          // Cubre rutas como /api/user/{userId}, /api/user/soft/{userId} y /api/user/buscar
+                                "/api/user/buscar",
+                                "/api/user/soft/**"
+                        ).permitAll()
+                        // Cualquier otra solicitud requiere autenticación
                         .anyRequest().authenticated()
                 );
+
 
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 

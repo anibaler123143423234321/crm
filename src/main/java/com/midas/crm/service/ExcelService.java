@@ -50,14 +50,20 @@ public class ExcelService {
                 int cellIndex = 0;
                 while (cells.hasNext()) {
                     Cell currentCell = cells.next();
+                    String cellValue = getCellValueAsString(currentCell);
                     switch (cellIndex) {
-                        case 0 -> user.setUsername(getCellValueAsString(currentCell));
-                        case 1 -> user.setPassword(getCellValueAsString(currentCell)); // Recuerda encriptarla al guardar
-                        case 2 -> user.setNombre(getCellValueAsString(currentCell));
-                        case 3 -> user.setApellido(getCellValueAsString(currentCell));
-                        case 4 -> user.setTelefono(getCellValueAsString(currentCell));
-                        case 5 -> user.setEmail(getCellValueAsString(currentCell));
-                        case 6 -> user.setSede(getCellValueAsString(currentCell));
+                        case 0 -> user.setUsername(cellValue);
+                        case 1 -> user.setPassword(cellValue);
+                        case 2 -> {
+                            // Validar DNI: si es mayor a 8 caracteres, truncarlo a 8
+                            if (cellValue.length() > 8) {
+                                cellValue = cellValue.substring(0, 8);
+                            }
+                            user.setDni(cellValue);
+                        }
+                        case 3 -> user.setNombre(cellValue);
+                        case 4 -> user.setApellido(cellValue);
+                        case 5 -> user.setSede(cellValue);
                         default -> {
                         }
                     }
@@ -82,7 +88,7 @@ public class ExcelService {
                 if (DateUtil.isCellDateFormatted(cell)) {
                     return cell.getDateCellValue().toString();
                 } else {
-                    return String.valueOf((long) cell.getNumericCellValue()); // Convierte números a String sin notación científica
+                    return String.valueOf((long) cell.getNumericCellValue());
                 }
             case BOOLEAN:
                 return String.valueOf(cell.getBooleanCellValue());

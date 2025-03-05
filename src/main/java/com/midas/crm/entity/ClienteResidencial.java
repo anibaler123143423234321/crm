@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -95,5 +96,8 @@ public class ClienteResidencial {
     @Column(name = "autoriza_energias", nullable = true)
     @Builder.Default
     private boolean autorizaEnergias = false;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
 
 }

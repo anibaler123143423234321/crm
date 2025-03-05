@@ -52,13 +52,14 @@ public class UserController {
 
         try {
             List<User> users = excelService.leerUsuariosDesdeExcel(file);
-            userService.saveUsers(users);
+            userService.saveUsers(users); // Aquí ya se genera automáticamente el email si no está
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuarios cargados exitosamente.");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al procesar el archivo Excel: " + e.getMessage());
         }
     }
+
     /*
     @GetMapping("listar")
     public List<User> listUsers() {
@@ -92,24 +93,22 @@ public class UserController {
     }
 
 
-    @PutMapping("change/{role}")
-    public ResponseEntity<?> changeRole(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Role role) {
-        User user = userService.findByUsername(userPrincipal.getUsername()).orElse(null);
+    @PutMapping("change/{role}/{userId}")
+    public ResponseEntity<?> changeRole(
+            @PathVariable Role role,
+            @PathVariable Long userId) {
 
+        User user = userService.findUserById(userId);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado.");
         }
 
-        if (role == Role.ADMIN && user.getRole() == Role.ADMIN) {
-            // Actualiza el rol a SUPERADMIN si es un ADMIN
-            userService.changeRole(Role.ADMIN, userPrincipal.getUsername());
-            return ResponseEntity.ok(true);
-        } else {
-            // Maneja otros cambios de roles aquí si es necesario
-            userService.changeRole(role, userPrincipal.getUsername());
-            return ResponseEntity.ok(true);
-        }
+        // Lógica adicional si fuera necesario. Por ejemplo, si quieres hacer algo distinto
+        // en caso de que el usuario ya tenga cierto rol.
+        userService.changeRole(role, user.getUsername());
+        return ResponseEntity.ok("Rol actualizado correctamente.");
     }
+
 
 
     @GetMapping

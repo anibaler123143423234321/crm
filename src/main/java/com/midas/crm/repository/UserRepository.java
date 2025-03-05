@@ -40,6 +40,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
            OR LOWER(u.sede)      LIKE LOWER(CONCAT('%', :searchTerm, '%'))
     """)
     Page<User> searchAllFields(@Param("searchTerm") String searchTerm, Pageable pageable);
+    boolean existsByDni(String dni); // Validar si ya existe un DNI
 
 }
 

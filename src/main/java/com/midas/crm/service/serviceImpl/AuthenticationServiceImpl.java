@@ -25,22 +25,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserRepository userRepository;
 
     @Override
-    public com.midas.crm.entity.User signInAndReturnJWT(com.midas.crm.entity.User signInRequest) {
-        com.midas.crm.entity.User user = userRepository.findByEmail(signInRequest.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("El usuario no fue encontrado:" + signInRequest.getEmail()));
+    public User signInAndReturnJWT(User signInRequest) {
+        // Buscar el usuario por username
+        User user = userRepository.findByUsername(signInRequest.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + signInRequest.getUsername()));
 
+        // Autenticar usando el username y password (no el email)
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), signInRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(
+                        signInRequest.getUsername(),
+                        signInRequest.getPassword()
+                )
         );
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         String jwt = jwtProvider.generateToken(userPrincipal);
 
-        com.midas.crm.entity.User sigInUser = userPrincipal.getUser();
-        sigInUser.setToken(jwt);
+        // Guardar el token en la entidad User si quieres retornarlo
+        User signInUser = userPrincipal.getUser();
+        signInUser.setToken(jwt);
 
-        return sigInUser;
+        return signInUser;
     }
+
 
 
 }

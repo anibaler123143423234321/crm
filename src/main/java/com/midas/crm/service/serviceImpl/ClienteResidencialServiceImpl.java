@@ -5,6 +5,8 @@ import com.midas.crm.repository.ClienteResidencialRepository;
 import com.midas.crm.service.ClienteResidencialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -30,9 +32,9 @@ public class ClienteResidencialServiceImpl implements ClienteResidencialService 
         if (cliente.getUsuario() == null) {
             throw new IllegalArgumentException("El cliente debe tener un usuario asociado");
         }
+        cliente.setFechaCreacion(LocalDateTime.now());
         return clienteRepo.save(cliente);
     }
-
 
     @Override
     public ClienteResidencial actualizar(Long id, ClienteResidencial cliente) {

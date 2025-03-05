@@ -29,10 +29,13 @@ public class User {
     @Column(name = "apellido", nullable = false)
     private String apellido;
 
-    @Column(name = "telefono", nullable = false)
+    @Column(name = "dni", nullable = false, length = 8, unique = true)
+    private String dni;
+
+    @Column(name = "telefono", nullable = true)
     private String telefono;
 
-    @Column(name = "email", nullable = false, length = 50, unique = true)
+    @Column(name = "email", nullable = true, length = 50, unique = true)
     private String email;
 
     @Column(name = "fecha_creacion", nullable = false)

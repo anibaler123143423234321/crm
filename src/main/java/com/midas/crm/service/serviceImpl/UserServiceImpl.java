@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
             adminUser.setApellido("Prueba");
             adminUser.setTelefono("123456789");
             adminUser.setSede("Chiclayo");
+            adminUser.setDni("12345678");
             adminUser.setEmail("admin@midas.pe");
             adminUser.setFechaCreacion(LocalDateTime.now());
             adminUser.setRole(Role.ADMIN);
@@ -126,33 +127,45 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUsers(List<User> users) {
         for (User user : users) {
-            if (userRepository.existsByUsername(user.getUsername())) {
-                continue;
+            // Validar si el usuario ya existe por username o por DNI
+            if (userRepository.existsByUsername(user.getUsername()) || userRepository.existsByDni(user.getDni())) {
+                continue; // Si el usuario o el DNI ya existen, saltar
             }
 
-            user.setRole(Role.ASESOR);
-            user.setPassword(passwordEncoder.encode(user.getPassword())); // Encriptar contraseña
-            user.setEstado("A"); // Estado Activo por defecto
+            // Generar el email automáticamente si no está presente
+            if (user.getEmail() == null || user.getEmail().isEmpty()) {
+                user.setEmail(user.getUsername() + "@midas.pe");
+            }
+
+            user.setRole(Role.ASESOR); // Asignar rol por defecto
+            user.setPassword(passwordEncoder.encode(user.getPassword())); // Encriptar la contraseña
+            user.setEstado("A"); // Estado activo
             user.setFechaCreacion(LocalDateTime.now()); // Fecha de creación actual
             userRepository.save(user);
         }
     }
 
-    @Override
-    public User updateUser(Long id, User updateUser) {
-        Optional<User> existingUserOptional = userRepository.findById(id);
 
-        if (existingUserOptional.isPresent()) {
-            User existingUser = existingUserOptional.get();
+    public User updateUser(Long userId, User updateUser) {
+        Optional<User> existingUserOpt = userRepository.findById(userId);
+        if(existingUserOpt.isPresent()){
+            User existingUser = existingUserOpt.get();
+            // Actualiza los campos que deseas modificar
+            existingUser.setNombre(updateUser.getNombre());
+            existingUser.setApellido(updateUser.getApellido());
+            existingUser.setUsername(updateUser.getUsername());
+            existingUser.setSede(updateUser.getSede());
+            existingUser.setTelefono(updateUser.getTelefono());
+            existingUser.setEmail(updateUser.getEmail());
+            // Asegúrate de actualizar también el estado (Activo/Inactivo)
+            existingUser.setEstado(updateUser.getEstado());
+            // ... Actualiza otros campos si es necesario
 
-            // Llamar al nuevo método para actualizar los atributos
-            User updatedUser = updateUserAttributes(existingUser, updateUser);
-
-            return userRepository.save(updatedUser);
-        } else {
-            return null;
+            return userRepository.save(existingUser);
         }
+        return null;
     }
+
 
     // ============== Eliminar usuario ==================
     @Override
