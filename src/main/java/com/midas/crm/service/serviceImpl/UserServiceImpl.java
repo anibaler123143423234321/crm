@@ -48,13 +48,13 @@ public class UserServiceImpl implements UserService {
     private void initializeAdminUser() {
         if (!userRepository.existsByUsername("admin")) {
             User adminUser = new User();
-            adminUser.setUsername("admin");
-            adminUser.setPassword(passwordEncoder.encode("12345678")); // Cambia a una contraseña segura
+            adminUser.setUsername("70680710");
+            adminUser.setPassword(passwordEncoder.encode("$olutions2K25.")); // Cambia a una contraseña segura
             adminUser.setNombre("Andree");
-            adminUser.setApellido("Prueba");
+            adminUser.setApellido("Admin");
             adminUser.setTelefono("123456789");
             adminUser.setSede("Chiclayo");
-            adminUser.setDni("12345678");
+            adminUser.setDni("70680710");
             adminUser.setEmail("admin@midas.pe");
             adminUser.setFechaCreacion(LocalDateTime.now());
             adminUser.setRole(Role.ADMIN);
