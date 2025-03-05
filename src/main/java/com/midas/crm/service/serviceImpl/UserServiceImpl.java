@@ -121,21 +121,6 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
-    @Override
-    public Optional<User> getdByUsernameOrEmail(String nombreOrEmail)
-    {
-        return userRepository.findByUsernameOrEmail(nombreOrEmail, nombreOrEmail);
-    }
-
-    public void updateTokenPassword(User user, String newTokenPassword) {
-        user.setTokenPassword(newTokenPassword);
-        userRepository.save(user);
-    }
-
-    @Override
-    public Optional<User> getByTokenPassword(String tokenPassword) {
-        return userRepository.findByTokenPassword(tokenPassword);
-    }
 
     @Transactional
     @Override
@@ -169,7 +154,31 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    // Nuevo método para actualizar atributos de manera más genérica
+    // ============== Eliminar usuario ==================
+    @Override
+    public boolean softDeleteUser(Long userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            // Cambiamos el estado a "I" (inactivo) y actualizamos la fecha de eliminación
+            user.setEstado("I");
+            user.setDeletionTime(LocalDateTime.now());
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+
+
+    @Override
+    public Page<User> searchAllFields(String query, Pageable pageable) {
+        if (query == null || query.trim().isEmpty()) {
+            return userRepository.findAll(pageable);
+        }
+        return userRepository.searchAllFields(query, pageable);
+    }
+
     private User updateUserAttributes(User existingUser, User updateUser) {
         if (updateUser.getNombre() != null) {
             existingUser.setNombre(updateUser.getNombre());

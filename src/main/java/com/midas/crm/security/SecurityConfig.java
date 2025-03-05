@@ -79,6 +79,7 @@ public class SecurityConfig {
                     "http://localhost:5200",
                     "https://seguimiento-egresado.web.app",
                     "https://apisozarusac.com",
+                    "https://apisozarusac.com/BackendJava",
                     "https://www.api.midassolutiongroup.com",
                     "https://project-a16f1.web.app" // ✅ Firebase Hosting
             ));
@@ -98,6 +99,7 @@ public class SecurityConfig {
                 registry.addMapping("/**")
                         .allowedOrigins(
                                 "http://localhost:5200",
+                                "https://apisozarusac.com/BackendJava",
                                 "https://seguimiento-egresado.web.app",
                                 "https://apisozarusac.com",
                                 "https://www.api.midassolutiongroup.com",
