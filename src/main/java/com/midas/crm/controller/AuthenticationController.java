@@ -22,20 +22,23 @@ public class AuthenticationController {
     private UserService userService;
 
     @PostMapping("sign-up")
-    public ResponseEntity<?> signUp(@RequestBody User user)
-    {
-        if(userService.findByUsername(user.getUsername()).isPresent())
-        {
+    public ResponseEntity<?> signUp(@RequestBody User user) {
+        if(userService.findByUsername(user.getUsername()).isPresent()) {
             return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
         }
 
-        if(userService.findByEmail(user.getEmail()).isPresent())
-        {
+        // Si no se envía email, generarlo a partir del username
+        if(user.getEmail() == null || user.getEmail().isEmpty()) {
+            user.setEmail(user.getUsername() + "@midas.pe");
+        }
+        // Verificar el email sólo si se envió o se generó
+        if(userService.findByEmail(user.getEmail()).isPresent()) {
             return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
         }
 
         return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }
+
 
     @PostMapping("sign-in")
     public ResponseEntity<?> signIn(@RequestBody User user)
