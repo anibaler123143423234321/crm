@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         System.out.println("Longitud de la contraseña cifrada: " + encodedPassword.length());
         user.setPassword(encodedPassword);
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.ASESOR);
         user.setEstado("A"); // Estado "A" de Activo
         user.setFechaCreacion(LocalDateTime.now());
         User userCreated = userRepository.save(user);
