@@ -20,9 +20,11 @@ com\midas\crm\security\jwt\JwtAuthorizationFilter.class
 com\midas\crm\security\SecurityConfig$1.class
 com\midas\crm\service\ClienteResidencialService.class
 com\midas\crm\service\UserService.class
+com\midas\crm\controller\ClienteResidencialController.class
 com\midas\crm\entity\ClientePromocionBody.class
 com\midas\crm\utils\SecurityUtils.class
 com\midas\crm\controller\UserController.class
 com\midas\crm\entity\User.class
 com\midas\crm\service\serviceImpl\UserServiceImpl.class
+com\midas\crm\entity\ClienteConUsuarioDTO.class
 com\midas\crm\service\ExcelService.class

@@ -59,7 +59,6 @@ public class UserServiceImpl implements UserService {
             adminUser.setFechaCreacion(LocalDateTime.now());
             adminUser.setRole(Role.ADMIN);
             adminUser.setEstado("A");
-
             userRepository.save(adminUser);
             System.out.println("Usuario ADMIN creado exitosamente.");
         } else {

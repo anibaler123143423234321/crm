@@ -1,5 +1,6 @@
 package com.midas.crm.service.serviceImpl;
 
+import com.midas.crm.entity.ClienteConUsuarioDTO;
 import com.midas.crm.entity.ClienteResidencial;
 import com.midas.crm.repository.ClienteResidencialRepository;
 import com.midas.crm.service.ClienteResidencialService;
@@ -19,6 +20,11 @@ public class ClienteResidencialServiceImpl implements ClienteResidencialService 
     @Override
     public List<ClienteResidencial> listarTodos() {
         return clienteRepo.findAll();
+    }
+
+    @Override
+    public List<ClienteConUsuarioDTO> obtenerClientesConUsuario() {
+        return clienteRepo.obtenerClientesConUsuario();
     }
 
     @Override

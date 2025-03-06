@@ -1,7 +1,9 @@
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\controller\AuthenticationController.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\controller\ClientePromocionController.java
+C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\controller\ClienteResidencialController.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\controller\UserController.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\CrmApplication.java
+C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\entity\ClienteConUsuarioDTO.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\entity\ClientePromocionBody.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\entity\ClienteResidencial.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\entity\Role.java

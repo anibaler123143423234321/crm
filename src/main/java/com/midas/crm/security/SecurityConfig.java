@@ -71,7 +71,8 @@ public class SecurityConfig {
                                 "/api/user",             // Por ejemplo, para obtener el usuario actual
                                 "/api/user/**",          // Cubre rutas como /api/user/{userId}, /api/user/soft/{userId} y /api/user/buscar
                                 "/api/user/buscar",
-                                "/api/user/soft/**"
+                                "/api/user/soft/**",
+                                "/api/clientes/con-usuario"
                         ).permitAll()
                         // Cualquier otra solicitud requiere autenticación
                         .anyRequest().authenticated()
