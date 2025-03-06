@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api")
@@ -23,7 +25,6 @@ public class ClientePromocionController {
 
     @Autowired
     private UserService userService;
-
 
     @PostMapping("/cliente-promocion")
     public ResponseEntity<?> crearClienteYPromocion(@RequestBody ClientePromocionBody body) {
@@ -43,7 +44,6 @@ public class ClientePromocionController {
 
         cliente.setUsuario(usuario);
 
-
         // Guardar Cliente con su usuario
         ClienteResidencial clienteGuardado = clienteService.guardar(cliente);
 
@@ -53,6 +53,21 @@ public class ClientePromocionController {
         respuesta.put("usuario_creador", usuario.getUsername());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
+    }
+
+    // GET para listar todos los clientes en promoción
+    @GetMapping("/cliente-promocion")
+    public ResponseEntity<?> listarClientesPromocion() {
+        List<ClienteResidencial> clientes = clienteService.listarTodos();
+        return ResponseEntity.ok(clientes);
+    }
+
+    // GET para obtener un cliente en promoción por número móvil
+    @GetMapping("/cliente-promocion/movil/{movil}")
+    public ResponseEntity<ClienteResidencial> obtenerClientePromocionPorMovil(@PathVariable String movil) {
+        ClienteResidencial cliente = clienteService.buscarPorMovil(movil)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado con móvil: " + movil));
+        return ResponseEntity.ok(cliente);
     }
 
 }

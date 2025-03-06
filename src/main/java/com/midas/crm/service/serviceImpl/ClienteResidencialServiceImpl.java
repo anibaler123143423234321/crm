@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class ClienteResidencialServiceImpl implements ClienteResidencialService {
@@ -47,7 +48,7 @@ public class ClienteResidencialServiceImpl implements ClienteResidencialService 
         if (!clienteRepo.existsById(id)) {
             throw new NoSuchElementException("Cliente no encontrado con id: " + id);
         }
-        cliente.setId(id);  // aseguramos que actualice el existente
+        cliente.setId(id);  // Aseguramos que actualice el existente
         return clienteRepo.save(cliente);
     }
 
@@ -57,5 +58,10 @@ public class ClienteResidencialServiceImpl implements ClienteResidencialService 
             throw new NoSuchElementException("Cliente no encontrado con id: " + id);
         }
         clienteRepo.deleteById(id);
+    }
+
+    @Override
+    public Optional<ClienteResidencial> buscarPorMovil(String movilContacto) {
+        return clienteRepo.findByMovilContacto(movilContacto);
     }
 }
