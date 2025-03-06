@@ -94,7 +94,8 @@ public class SecurityConfig {
                     "https://apisozarusac.com",
                     "https://apisozarusac.com/BackendJava",
                     "https://www.api.midassolutiongroup.com",
-                    "https://project-a16f1.web.app"
+                    "https://project-a16f1.web.app",
+                    "https://www.leads.midassolutiongroup.com"
             ));
             config.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT", "OPTIONS"));
             config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
@@ -116,7 +117,8 @@ public class SecurityConfig {
                                 "https://seguimiento-egresado.web.app",
                                 "https://apisozarusac.com",
                                 "https://www.api.midassolutiongroup.com",
-                                "https://project-a16f1.web.app"
+                                "https://project-a16f1.web.app",
+                                "https://www.leads.midassolutiongroup.com"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("Authorization", "Content-Type")

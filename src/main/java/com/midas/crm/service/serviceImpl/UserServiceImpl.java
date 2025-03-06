@@ -46,10 +46,10 @@ public class UserServiceImpl implements UserService {
 
     // Método para inicializar el usuario ADMIN
     private void initializeAdminUser() {
-        if (!userRepository.existsByUsername("admin")) {
+        if (!userRepository.existsByUsername("70680710") && !userRepository.existsByDni("70680710")) {
             User adminUser = new User();
             adminUser.setUsername("70680710");
-            adminUser.setPassword(passwordEncoder.encode("$olutions2K25.")); // Cambia a una contraseña segura
+            adminUser.setPassword(passwordEncoder.encode("$olutions2K25."));
             adminUser.setNombre("Andree");
             adminUser.setApellido("Admin");
             adminUser.setTelefono("123456789");
@@ -66,6 +66,7 @@ public class UserServiceImpl implements UserService {
             System.out.println("El usuario ADMIN ya existe.");
         }
     }
+
 
     @Override
     public Page<User> findAllUsers(Pageable pageable) {
