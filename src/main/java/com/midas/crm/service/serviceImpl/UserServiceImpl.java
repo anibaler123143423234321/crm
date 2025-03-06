@@ -80,11 +80,9 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.ASESOR);
         user.setEstado("A"); // Estado "A" de Activo
         user.setFechaCreacion(LocalDateTime.now());
-        User userCreated = userRepository.save(user);
-        String jwt = jwtProvider.generateToken(userCreated);
-        userCreated.setToken(jwt);
-        return userCreated;
+        return userRepository.save(user);
     }
+
 
     @Override
     public Optional<User> findByUsername(String username)
