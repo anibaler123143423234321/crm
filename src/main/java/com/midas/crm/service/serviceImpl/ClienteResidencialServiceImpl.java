@@ -5,8 +5,14 @@ import com.midas.crm.entity.ClienteResidencial;
 import com.midas.crm.repository.ClienteResidencialRepository;
 import com.midas.crm.service.ClienteResidencialService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -18,14 +24,30 @@ public class ClienteResidencialServiceImpl implements ClienteResidencialService 
     @Autowired
     private ClienteResidencialRepository clienteRepo;
 
+    public ClienteResidencialServiceImpl(ClienteResidencialRepository clienteRepo) {
+        this.clienteRepo = clienteRepo;
+    }
+
     @Override
     public List<ClienteResidencial> listarTodos() {
         return clienteRepo.findAll();
     }
 
     @Override
-    public List<ClienteConUsuarioDTO> obtenerClientesConUsuario() {
-        return clienteRepo.obtenerClientesConUsuario();
+    public Page<ClienteConUsuarioDTO> obtenerClientesConUsuario(Pageable pageable) {
+        return clienteRepo.obtenerClientesConUsuario(pageable);
+    }
+
+
+    @Override
+    public Optional<ClienteResidencial> buscarPorMovil(String movil) {
+        System.out.println("Buscando cliente con móvil: " + movil);
+        Optional<ClienteResidencial> cliente = clienteRepo.findByMovilContacto(movil);
+        cliente.ifPresentOrElse(
+                c -> System.out.println("Cliente encontrado: " + c),
+                () -> System.out.println("Cliente no encontrado")
+        );
+        return cliente;
     }
 
     @Override
@@ -61,7 +83,8 @@ public class ClienteResidencialServiceImpl implements ClienteResidencialService 
     }
 
     @Override
-    public Optional<ClienteResidencial> buscarPorMovil(String movilContacto) {
-        return clienteRepo.findByMovilContacto(movilContacto);
+    public Page<ClienteConUsuarioDTO> obtenerClientesConUsuarioFiltrados(String dniAsesor, String nombreAsesor, String numeroMovil, LocalDate fecha, Pageable pageable) {
+        return clienteRepo.obtenerClientesConUsuarioFiltrados(dniAsesor, nombreAsesor, numeroMovil, fecha, pageable);
     }
 }
+

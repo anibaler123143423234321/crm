@@ -17,10 +17,14 @@ C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\security\jwt\JwtPro
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\security\SecurityConfig.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\security\UserPrincipal.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\service\AuthenticationService.java
+C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\service\ClienteResidencialExcelService.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\service\ClienteResidencialService.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\service\ExcelService.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\service\serviceImpl\AuthenticationServiceImpl.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\service\serviceImpl\ClienteResidencialServiceImpl.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\service\serviceImpl\UserServiceImpl.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\service\UserService.java
+C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\utils\CustomExceptionHandler.java
 C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\utils\SecurityUtils.java
+C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\utils\StringToLocalDateConverter.java
+C:\Users\dagne\Desktop\MIDAS\crm\src\main\java\com\midas\crm\utils\WebConfig.java

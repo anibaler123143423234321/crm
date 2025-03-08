@@ -15,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -48,39 +51,33 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Deshabilita CSRF para APIs sin estado (JWT)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Usa la configuración de CORS
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        // Endpoints de autenticación y registro
+                        .requestMatchers("/error").permitAll() // Permite acceso a /error
                         .requestMatchers(
                                 "/api/authentication/sign-in",
-                                "/api/authentication/sign-up"
-                        ).permitAll()
-                        // Endpoints públicos adicionales (por ejemplo, promociones y carga masiva)
-                        .requestMatchers(
+                                "/api/authentication/sign-up",
                                 "/api/cliente-promocion",
-                                "/api/user/crear-masivo"
-                        ).permitAll()
-                        // Endpoints de usuarios (listar, cambiar rol, obtener por id, búsqueda, soft delete, etc.)
-                        .requestMatchers(
+                                "/api/user/crear-masivo",
                                 "/api/user/listar",
-                                "/api/user/change/**",   // Permite /api/user/change/{role} o /api/user/change/{role}/{userId}
-                                "/api/user",             // Por ejemplo, para obtener el usuario actual
-                                "/api/user/**",          // Cubre rutas como /api/user/{userId}, /api/user/soft/{userId} y /api/user/buscar
+                                "/api/user/change/**",
+                                "/api/user",
+                                "/api/user/**",
                                 "/api/user/buscar",
                                 "/api/user/soft/**",
-                                "/api/clientes/con-usuario"
+                                "/api/clientes/con-usuario",
+                                "/api/clientes/con-usuario-filtrados",
+                                "/api/clientes/exportar-excel",
+                                "/api/cliente-promocion/movil/{movil}",
+                                "/api/cliente-promocion/"
                         ).permitAll()
-                        // Cualquier otra solicitud requiere autenticación
                         .anyRequest().authenticated()
                 );
-
-
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 
@@ -104,6 +101,13 @@ public class SecurityConfig {
             config.setAllowCredentials(true);
             return config;
         };
+    }
+
+    // ✅ CONFIGURACIÓN DE FIREWALL PARA PERMITIR %0A
+    @Bean
+    public HttpFirewall httpFirewall() {
+        DefaultHttpFirewall firewall = new DefaultHttpFirewall(); // Usa el firewall predeterminado
+        return firewall;
     }
 
     @Bean

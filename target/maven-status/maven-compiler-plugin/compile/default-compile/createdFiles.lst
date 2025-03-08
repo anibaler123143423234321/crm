@@ -7,13 +7,17 @@ com\midas\crm\security\SecurityConfig.class
 com\midas\crm\security\UserPrincipal$UserPrincipalBuilder.class
 com\midas\crm\service\serviceImpl\ClienteResidencialServiceImpl.class
 com\midas\crm\CrmApplication.class
+com\midas\crm\utils\WebConfig.class
 com\midas\crm\service\AuthenticationService.class
 com\midas\crm\security\jwt\JwtProviderImpl.class
 com\midas\crm\security\CustomUserDetailsService.class
 com\midas\crm\repository\ClienteResidencialRepository.class
 com\midas\crm\security\jwt\JwtProvider.class
 com\midas\crm\entity\ClienteResidencial$ClienteResidencialBuilder.class
+com\midas\crm\service\ClienteResidencialExcelService.class
+com\midas\crm\utils\CustomExceptionHandler.class
 com\midas\crm\service\ExcelService$1.class
+com\midas\crm\utils\StringToLocalDateConverter.class
 com\midas\crm\controller\AuthenticationController.class
 com\midas\crm\entity\ClienteResidencial.class
 com\midas\crm\security\jwt\JwtAuthorizationFilter.class
