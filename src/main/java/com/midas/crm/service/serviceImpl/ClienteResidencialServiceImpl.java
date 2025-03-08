@@ -2,16 +2,16 @@ package com.midas.crm.service.serviceImpl;
 
 import com.midas.crm.entity.ClienteConUsuarioDTO;
 import com.midas.crm.entity.ClienteResidencial;
+import com.midas.crm.entity.User;
 import com.midas.crm.repository.ClienteResidencialRepository;
+import com.midas.crm.repository.UserRepository;
 import com.midas.crm.service.ClienteResidencialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,9 +24,8 @@ public class ClienteResidencialServiceImpl implements ClienteResidencialService 
     @Autowired
     private ClienteResidencialRepository clienteRepo;
 
-    public ClienteResidencialServiceImpl(ClienteResidencialRepository clienteRepo) {
-        this.clienteRepo = clienteRepo;
-    }
+    @Autowired
+    private UserRepository userRepo;
 
     @Override
     public List<ClienteResidencial> listarTodos() {
@@ -38,16 +37,9 @@ public class ClienteResidencialServiceImpl implements ClienteResidencialService 
         return clienteRepo.obtenerClientesConUsuario(pageable);
     }
 
-
     @Override
     public Optional<ClienteResidencial> buscarPorMovil(String movil) {
-        System.out.println("Buscando cliente con móvil: " + movil);
-        Optional<ClienteResidencial> cliente = clienteRepo.findByMovilContacto(movil);
-        cliente.ifPresentOrElse(
-                c -> System.out.println("Cliente encontrado: " + c),
-                () -> System.out.println("Cliente no encontrado")
-        );
-        return cliente;
+        return clienteRepo.findByMovilContacto(movil);
     }
 
     @Override
@@ -55,15 +47,26 @@ public class ClienteResidencialServiceImpl implements ClienteResidencialService 
         return clienteRepo.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Cliente no encontrado con id: " + id));
     }
-
+    @Transactional
     @Override
-    public ClienteResidencial guardar(ClienteResidencial cliente) {
-        if (cliente.getUsuario() == null) {
-            throw new IllegalArgumentException("El cliente debe tener un usuario asociado");
+    public ClienteResidencial guardar(ClienteResidencial cliente, Long usuarioId) {
+        if (cliente == null || usuarioId == null) {
+            throw new IllegalArgumentException("Cliente y usuarioId no pueden ser nulos");
         }
+
+        // Obtener el usuario de la base de datos
+        User usuario = userRepo.findById(usuarioId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con id: " + usuarioId));
+
+        cliente.setUsuario(usuario);
         cliente.setFechaCreacion(LocalDateTime.now());
+
+        // Dado que 'movilesAPortar' es una lista de Strings, no es necesario asignar relaciones
+        // La colección se gestionará automáticamente como ElementCollection
+
         return clienteRepo.save(cliente);
     }
+
 
     @Override
     public ClienteResidencial actualizar(Long id, ClienteResidencial cliente) {
@@ -87,4 +90,3 @@ public class ClienteResidencialServiceImpl implements ClienteResidencialService 
         return clienteRepo.obtenerClientesConUsuarioFiltrados(dniAsesor, nombreAsesor, numeroMovil, fecha, pageable);
     }
 }
-

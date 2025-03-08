@@ -6,6 +6,7 @@ import com.midas.crm.entity.ClienteResidencial;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,7 +17,9 @@ public interface ClienteResidencialService {
 
     ClienteResidencial obtenerPorId(Long id);
 
-    ClienteResidencial guardar(ClienteResidencial cliente);
+
+    @Transactional
+    ClienteResidencial guardar(ClienteResidencial cliente, Long usuarioId);
 
     ClienteResidencial actualizar(Long id, ClienteResidencial cliente);
 

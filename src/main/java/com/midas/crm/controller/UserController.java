@@ -44,6 +44,23 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PostMapping("crear-masivo-backoffice")
+    public ResponseEntity<?> createBackofficeUsersFromExcel(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("Debe subir un archivo Excel válido.");
+        }
+
+        try {
+            List<User> users = excelService.leerUsuariosDesdeExcelBackoffice(file);
+            userService.saveUsers(users); // Aquí se asume que saveUsers maneja la creación de usuarios.
+            return ResponseEntity.status(HttpStatus.CREATED).body("Usuarios BACKOFFICE cargados exitosamente.");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al procesar el archivo Excel: " + e.getMessage());
+        }
+    }
+
+
     @PostMapping("crear-masivo")
     public ResponseEntity<?> createUsersFromExcel(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {

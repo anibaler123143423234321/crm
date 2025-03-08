@@ -36,38 +36,25 @@ public class ClientePromocionController {
                     .body("Faltan datos de clienteResidencial o usuarioId");
         }
 
-        User usuario = userService.findUserById(usuarioId);
-        if (usuario == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Usuario no encontrado con id: " + usuarioId);
-        }
-
-        cliente.setUsuario(usuario);
-
-        // Guardar Cliente con su usuario
-        ClienteResidencial clienteGuardado = clienteService.guardar(cliente);
+        ClienteResidencial clienteGuardado = clienteService.guardar(cliente, usuarioId);
 
         var respuesta = new java.util.HashMap<String, Object>();
         respuesta.put("mensaje", "Datos guardados con éxito");
         respuesta.put("cliente", clienteGuardado);
-        respuesta.put("usuario_creador", usuario.getUsername());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
     }
 
-    // GET para listar todos los clientes en promoción
     @GetMapping("/cliente-promocion")
     public ResponseEntity<?> listarClientesPromocion() {
         List<ClienteResidencial> clientes = clienteService.listarTodos();
         return ResponseEntity.ok(clientes);
     }
 
-    // GET para obtener un cliente en promoción por número móvil
     @GetMapping("/cliente-promocion/movil/{movil}")
     public ResponseEntity<ClienteResidencial> obtenerClientePromocionPorMovil(@PathVariable String movil) {
         ClienteResidencial cliente = clienteService.buscarPorMovil(movil)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado con móvil: " + movil));
         return ResponseEntity.ok(cliente);
     }
-
 }

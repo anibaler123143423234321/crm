@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -79,10 +80,10 @@ public class ClienteResidencial {
     @Column(name = "icc", length = 19, nullable = true)
     private String icc;
 
+    @Column(name = "moviles_a_portar")
     @ElementCollection
-    @CollectionTable(name = "moviles_a_portar", joinColumns = @JoinColumn(name = "cliente_residencial_id"))
-    @Column(name = "numero_movil", length = 20, nullable = true)
-    private List<String> movilesAPortar;
+    @Builder.Default
+    private List<String> movilesAPortar = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = true)

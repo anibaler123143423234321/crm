@@ -87,31 +87,34 @@ public class ClienteResidencialController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
-
-    // ✅ Endpoint para descargar el Excel con el formato específico
-    @GetMapping("/exportar-excel")
-    public ResponseEntity<byte[]> exportarExcel() {
-        byte[] excelData = clienteResidencialExcelService.generarExcelClientes();
+    /**
+     * Endpoint para exportar en formato MASIVO (todos los clientes en una sola hoja).
+     */
+    @GetMapping("/exportar-excel-masivo")
+    public ResponseEntity<byte[]> exportarExcelMasivo() {
+        byte[] excelData = clienteResidencialExcelService.generarExcelClientesMasivo();
 
         if (excelData == null || excelData.length == 0) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=clientes_residenciales.xlsx");
+        headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=clientes_residenciales_masivo.xlsx");
         headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
         return new ResponseEntity<>(excelData, headers, HttpStatus.OK);
     }
 
-    // Nuevo endpoint para exportar un cliente individual
+    /**
+     * Endpoint para exportar en formato INDIVIDUAL (un solo cliente).
+     * Se busca el cliente por su "movilContacto".
+     */
     @GetMapping("/exportar-excel-individual/{movil}")
     public ResponseEntity<byte[]> exportarExcelIndividual(@PathVariable String movil) {
-        byte[] excelData = clienteResidencialExcelService.generarExcelCliente(movil);
+        byte[] excelData = clienteResidencialExcelService.generarExcelClienteIndividual(movil);
 
-        if (excelData.length == 0) {
-            // Si no se encontró el cliente o hubo error, podrías retornar 404 o 204
+        if (excelData == null || excelData.length == 0) {
+            // Si no se encontró el cliente o el Excel quedó vacío
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
 

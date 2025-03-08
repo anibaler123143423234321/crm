@@ -22,6 +22,59 @@ public class ExcelService {
     @Autowired
     private UserRepository userRepository;
 
+    public List<User> leerUsuariosDesdeExcelBackoffice(MultipartFile file) throws IOException {
+        List<User> usuarios = new ArrayList<>();
+
+        try (InputStream inputStream = file.getInputStream();
+             Workbook workbook = new XSSFWorkbook(inputStream)) {
+
+            Sheet sheet = workbook.getSheetAt(0); // Usamos la primera hoja del Excel
+            Iterator<Row> rows = sheet.iterator();
+            boolean isFirstRow = true; // Para saltar el encabezado
+
+            while (rows.hasNext()) {
+                Row currentRow = rows.next();
+
+                if (isFirstRow) { // Saltamos la primera fila (encabezado)
+                    isFirstRow = false;
+                    continue;
+                }
+
+                Iterator<Cell> cells = currentRow.iterator();
+                User user = new User();
+
+                user.setFechaCreacion(LocalDateTime.now()); // Fecha de creación por defecto
+                user.setRole(Role.BACKOFFICE); // Asignamos el rol BACKOFFICE
+                user.setEstado("A"); // Estado activo
+
+                int cellIndex = 0;
+                while (cells.hasNext()) {
+                    Cell currentCell = cells.next();
+                    String cellValue = getCellValueAsString(currentCell);
+                    switch (cellIndex) {
+                        case 0 -> user.setUsername(cellValue);
+                        case 1 -> user.setPassword(cellValue);
+                        case 2 -> {
+                            // Validar DNI: si es mayor a 8 caracteres, truncarlo a 8
+                            if (cellValue.length() > 8) {
+                                cellValue = cellValue.substring(0, 8);
+                            }
+                            user.setDni(cellValue);
+                        }
+                        case 3 -> user.setNombre(cellValue);
+                        case 4 -> user.setApellido(cellValue);
+                        case 5 -> user.setSede(cellValue);
+                        default -> { }
+                    }
+                    cellIndex++;
+                }
+                usuarios.add(user);
+            }
+        }
+        return usuarios;
+    }
+
+
     public List<User> leerUsuariosDesdeExcel(MultipartFile file) throws IOException {
         List<User> usuarios = new ArrayList<>();
 

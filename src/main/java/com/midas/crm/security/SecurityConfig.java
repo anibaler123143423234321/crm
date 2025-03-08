@@ -63,6 +63,7 @@ public class SecurityConfig {
                                 "/api/authentication/sign-up",
                                 "/api/cliente-promocion",
                                 "/api/user/crear-masivo",
+                                "/api/user/crear-masivo-backoffice",
                                 "/api/user/listar",
                                 "/api/user/change/**",
                                 "/api/user",
@@ -71,7 +72,8 @@ public class SecurityConfig {
                                 "/api/user/soft/**",
                                 "/api/clientes/con-usuario",
                                 "/api/clientes/con-usuario-filtrados",
-                                "/api/clientes/exportar-excel",
+                                "/api/clientes/exportar-excel-individual/{movil}",
+                                "/api/clientes/exportar-excel-masivo",
                                 "/api/cliente-promocion/movil/{movil}",
                                 "/api/cliente-promocion/",
                                 "/api/clientes/exportar-excel-individual/{movil}"
