@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteResidencialExcelService {
@@ -114,4 +115,15 @@ public class ClienteResidencialExcelService {
         row.createCell(0).setCellValue(titulo);
         row.createCell(1).setCellValue(valor);
     }
+
+    // Nuevo método para un solo cliente
+    public byte[] generarExcelCliente(String movilContacto) {
+        Optional<ClienteResidencial> optionalCliente = clienteResidencialRepository.findByMovilContacto(movilContacto);
+        if (optionalCliente.isEmpty()) {
+            return new byte[0]; // si no existe, array vacío
+        }
+        // Reutilizamos generarExcelConFormato, pasando solo 1 cliente
+        return generarExcelConFormato(List.of(optionalCliente.get()), "Cliente Residencial");
+    }
+
 }

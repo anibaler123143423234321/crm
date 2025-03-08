@@ -105,6 +105,21 @@ public class ClienteResidencialController {
         return new ResponseEntity<>(excelData, headers, HttpStatus.OK);
     }
 
+    // Nuevo endpoint para exportar un cliente individual
+    @GetMapping("/exportar-excel-individual/{movil}")
+    public ResponseEntity<byte[]> exportarExcelIndividual(@PathVariable String movil) {
+        byte[] excelData = clienteResidencialExcelService.generarExcelCliente(movil);
 
+        if (excelData.length == 0) {
+            // Si no se encontró el cliente o hubo error, podrías retornar 404 o 204
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cliente_residencial_" + movil + ".xlsx");
+        headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+        return new ResponseEntity<>(excelData, headers, HttpStatus.OK);
+    }
 
 }

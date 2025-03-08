@@ -97,6 +97,11 @@ public class ClienteResidencial {
     @Builder.Default
     private boolean autorizaEnergias = false;
 
+    // ✅ NUEVO CAMPO PARA CHECKEAR SI FUE VENTA
+    @Column(name = "venta_realizada", nullable = true)
+    @Builder.Default
+    private boolean ventaRealizada = false;
+
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
 

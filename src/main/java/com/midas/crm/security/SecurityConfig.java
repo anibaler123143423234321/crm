@@ -73,7 +73,8 @@ public class SecurityConfig {
                                 "/api/clientes/con-usuario-filtrados",
                                 "/api/clientes/exportar-excel",
                                 "/api/cliente-promocion/movil/{movil}",
-                                "/api/cliente-promocion/"
+                                "/api/cliente-promocion/",
+                                "/api/clientes/exportar-excel-individual/{movil}"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );
